@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Models\Company;
 
 // Route::post('/login', function (Request $request) {
 //     $user = User::where('email', $request->email)->first();
@@ -25,14 +26,19 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Protected stateless routes
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/user', function (Request $request) {
         return $request->user();
-    });
 
-    Route::post('/logout', function (Request $request) {
-        // Revoke the token that was used to log in
-        $request->user()->currentAccessToken()->delete(); //
-
-        return response()->json(['message' => 'Logged out successfully']);
     });
+    Route::get('/companies/{company}/seo', function (Company $company) {
+        return response()->json([
+            'data' => $company->seo,
+        ]);
+    });
+    // Route::post('/logout', function (Request $request) {
+    //     // Revoke the token that was used to log in
+    //     $request->user()->currentAccessToken()->delete(); //
+    //     return response()->json(['message' => 'Logged out successfully']);
+    // });
 });
