@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -13,18 +13,20 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'device_name' => 'required', // Good practice for identifying mobile/desktop clients
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw new AuthenticationException('The provided credentials are incorrect.');
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
         }
-        $token = $user->createToken($request->device_name)->plainTextToken; //
+        Auth::login($user);
+        $request->session()->regenerate();
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'message' => 'Authenticated successfully',
+            'user' => $user,
         ]);
     }
 }
