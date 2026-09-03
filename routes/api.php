@@ -22,7 +22,7 @@ use App\Models\Company;
 //     return $user->tokens()->delete();
 // })->middleware('auth:sanctum');
 // Public routes
-Route::post('/login', [AuthController::class, 'login']);
+// Route::post('/login', [AuthController::class, 'login']);
 
 // Protected stateless routes
 Route::middleware('auth:sanctum')->group(function () {
