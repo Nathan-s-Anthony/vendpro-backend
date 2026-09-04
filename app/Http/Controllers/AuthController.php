@@ -23,10 +23,26 @@ class AuthController extends Controller
             ]);
         }
         Auth::login($user);
-        $request->session()->regenerate();
+        // $request->session()->regenerate();
         return response()->json([
             'message' => 'Authenticated successfully',
             'user' => $user,
+        ]);
+    }
+    public function logout(Request $request)
+    {
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'message' => 'Logged out successfully',
+        ]);
+    }
+    public function invalidateAllUsers(Request $request)
+    {
+        $request->session()->flush();
+        return response()->json([
+            'message' => 'Logged out successfully',
         ]);
     }
 }

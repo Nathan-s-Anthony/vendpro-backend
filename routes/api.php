@@ -29,16 +29,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', function (Request $request) {
         return $request->user();
-
     });
+
     Route::get('/companies/{company}/seo', function (Company $company) {
         return response()->json([
             'data' => $company->seo,
         ]);
     });
-    // Route::post('/logout', function (Request $request) {
-    //     // Revoke the token that was used to log in
-    //     $request->user()->currentAccessToken()->delete(); //
-    //     return response()->json(['message' => 'Logged out successfully']);
-    // });
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
