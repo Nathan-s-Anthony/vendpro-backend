@@ -40,8 +40,27 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('/user/getMachines', function () {
         $availableMachines = AvailableMachine::all();
+        $availableMachines->transform(function ($machine) {
+            $imagePath = (string) $machine->image;
+            if ($machine->image) {
+                $machine->image = [
+                    'data' => base64_encode(
+                        Storage::disk('public')->get($imagePath)
+                    ),
+                    'type' => Storage::disk('public')->mimeType($machine->image),
+                ];
+            }
+
+            return $machine;
+        });
         return response()->json([
             'data' => $availableMachines,
+        ]);
+    });
+
+    Route::get('/user/auth/check', function (Request $request) {
+        return response()->json([
+            'authenticated' => $request->user() !== null,
         ]);
     });
     Route::get('/companies/{company}/seo', function (Company $company) {
@@ -54,4 +73,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/createMachine', [CreateMachineController::class, 'createMachine']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+
 });

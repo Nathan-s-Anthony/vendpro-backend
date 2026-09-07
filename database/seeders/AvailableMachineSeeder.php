@@ -13,7 +13,7 @@ class AvailableMachineSeeder extends Seeder
             'name' => 'VendPro V-200',
             'model' => 'V-200',
             'serial_number' => 'VPV200-001842',
-            'image' => 'machine/vendpro-v200.jpeg',
+            'image' => 'machine/vendpro-v200.jpg',
         ]);
 
         AvailableMachine::create([
