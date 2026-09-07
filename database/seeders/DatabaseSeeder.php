@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
                 // CompanySeeder::class,
                 // SeoSeeder::class,
-            AvailableMachineSeeder::class
+            AvailableMachineSeeder::class,
+            LocationSeeder::class
         ]);
 
         // User::factory(10)->create();

@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
             'data' => $machine,
         ]);
     });
-    Route::get('/user/getMachines', function () {
+    Route::get('/getAvailableMachines', function () {
         $availableMachines = AvailableMachine::all();
         $availableMachines->transform(function ($machine) {
             $imagePath = (string) $machine->image;
@@ -57,7 +57,26 @@ Route::middleware('auth:sanctum')->group(function () {
             'data' => $availableMachines,
         ]);
     });
+    Route::get('/user/getMachines', function (Request $request) {
+        $machines = Machine::where('user_id', $request->user()->id)->get();
+        $machines->transform(function ($machine) {
+            if ($machine->image) {
+                $imagePath = (string) $machine->image;
+                $machine->image = [
+                    'data' => base64_encode(
+                        Storage::disk('public')->get($imagePath)
+                    ),
+                    'type' => Storage::disk('public')->mimeType($imagePath),
+                ];
+            }
 
+            return $machine;
+        });
+
+        return response()->json([
+            'data' => $machines,
+        ]);
+    });
     Route::get('/user/auth/check', function (Request $request) {
         return response()->json([
             'authenticated' => $request->user() !== null,
