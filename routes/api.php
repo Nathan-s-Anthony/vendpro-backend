@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CreateMachineController;
+use App\Models\Machine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -30,12 +32,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-
+    Route::get('/user/machines', function (Machine $machine) {
+        return response()->json([
+            'data' => $machine,
+        ]);
+    });
     Route::get('/companies/{company}/seo', function (Company $company) {
         return response()->json([
             'data' => $company->seo,
         ]);
     });
+
+
+    Route::post('/createMachine', [CreateMachineController::class, 'createMachine']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
