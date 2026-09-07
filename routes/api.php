@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateMachineController;
+use App\Models\AvailableMachine;
 use App\Models\Machine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/machines', function (Machine $machine) {
         return response()->json([
             'data' => $machine,
+        ]);
+    });
+    Route::get('/user/getMachines', function () {
+        $availableMachines = AvailableMachine::all();
+        return response()->json([
+            'data' => $availableMachines,
         ]);
     });
     Route::get('/companies/{company}/seo', function (Company $company) {

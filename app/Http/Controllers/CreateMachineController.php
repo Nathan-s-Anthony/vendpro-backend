@@ -8,6 +8,7 @@ class CreateMachineController extends Controller
 {
     public function createMachine(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required|string',
             'model' => 'required|string',
