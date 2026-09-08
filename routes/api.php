@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateMachineController;
 use App\Models\AvailableMachine;
 use App\Models\Machine;
+use App\Models\SourceCargo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -55,6 +56,29 @@ Route::middleware('auth:sanctum')->group(function () {
         });
         return response()->json([
             'data' => $availableMachines,
+        ]);
+    });
+
+
+
+    Route::get('/user/getRetailers', function (Request $request) {
+        $retailers = SourceCargo::all();
+        $retailers->transform(function ($machine) {
+            if ($machine->image) {
+                $imagePath = (string) $machine->image;
+                $machine->image = [
+                    'data' => base64_encode(
+                        Storage::disk('public')->get($imagePath)
+                    ),
+                    'type' => Storage::disk('public')->mimeType($imagePath),
+                ];
+            }
+
+            return $machine;
+        });
+
+        return response()->json([
+            'data' => $retailers,
         ]);
     });
     Route::get('/user/getMachines', function (Request $request) {
