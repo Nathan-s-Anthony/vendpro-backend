@@ -18,6 +18,7 @@ class Machine extends Model
         'location_id',
         'last_maintenance',
         'next_maintenance',
+        'user_id',
     ];
 
     protected $casts = [

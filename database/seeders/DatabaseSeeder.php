@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\SourceCargo;
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -25,16 +24,17 @@ class DatabaseSeeder extends Seeder
                 // MachineSeeder::class
                 // UserSeeder::class,
             LocationSeeder::class,
-            UserSeeder::class
+                // UserSeeder::class,
+            MachineSeeder::class,
         ]);
 
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Nathan',
-            'email' => 'nathan@test.com',
-            'password' => "nathan",
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Nathan',
+        //     'email' => 'nathan@test.com',
+        //     'password' => "nathan",
+        // ]);
 
 
 

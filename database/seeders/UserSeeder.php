@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
     {
         $user = request()->user();
         $location = request();
-        $user->locations()->machines()->create([
+        $user->location()->machines()->create([
             'name' => 'Sandton Drinks 01',
             'model' => 'Azkoyen Palma HZ70',
             'serial_number' => 'AZK-HZ70-0001',
