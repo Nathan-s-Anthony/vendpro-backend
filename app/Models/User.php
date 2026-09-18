@@ -35,4 +35,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Machine::class);
     }
+    public function activities(): HasMany
+    {
+        return $this->hasMany(UserActivity::class);
+    }
 }

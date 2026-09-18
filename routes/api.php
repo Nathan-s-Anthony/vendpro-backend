@@ -5,6 +5,7 @@ use App\Http\Controllers\CreateMachineController;
 use App\Models\AvailableMachine;
 use App\Models\Machine;
 use App\Models\SourceCargo;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -29,10 +30,16 @@ use App\Models\Company;
 // Route::post('/login', [AuthController::class, 'login']);
 
 // Protected stateless routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', function (Request $request) {
         return $request->user();
+    });
+    Route::get('/userActivity', function (Request $request) {
+        $available_records = UserActivity::all();
+        return response()->json([
+            'data' => $available_records,
+        ]);
     });
     Route::get('/user/machines', function (Machine $machine) {
         return response()->json([
@@ -40,8 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
     Route::get('/getAvailableMachines', function () {
-        $availableMachines = AvailableMachine::all();
-        $availableMachines->transform(function ($machine) {
+        $available_machines = AvailableMachine::all();
+        $available_machines->transform(function ($machine) {
             $imagePath = (string) $machine->image;
             if ($machine->image) {
                 $machine->image = [
@@ -55,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
             return $machine;
         });
         return response()->json([
-            'data' => $availableMachines,
+            'data' => $available_machines,
         ]);
     });
 
